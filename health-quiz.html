@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>健康小勇士闖關賽｜是非題 30 題</title>
+  <style>
+    :root{
+      --bg: #f7f8ff;
+      --bg2:#fff6fb;
+      --card:#ffffff;
+      --line:#e9eaf6;
+      --text:#22253a;
+      --muted:#6b6f91;
+
+      --mint:#5eead4;
+      --sky:#60a5fa;
+      --pink:#fb7185;
+      --violet:#a78bfa;
+      --yellow:#fbbf24;
+
+      --good:#10b981;
+      --bad:#ef4444;
+      --softGood:#eafff8;
+      --softBad:#fff1f3;
+
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(35, 41, 70, 0.10);
+      --shadow2: 0 6px 18px rgba(35, 41, 70, 0.08);
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC","PingFang TC","Microsoft JhengHei", Arial;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 10% 15%, rgba(167,139,250,.25), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(96,165,250,.20), transparent 60%),
+        radial-gradient(900px 500px at 50% 95%, rgba(94,234,212,.18), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+    }
+
+    .wrap{
+      width:min(1000px, 100%);
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:16px;
+    }
+    @media (max-width: 960px){ .wrap{grid-template-columns:1fr} }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    header{
+      padding:18px 18px 12px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .title h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    .title .sub{
+      margin-top:6px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fafbff;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .pill b{font-family:var(--mono)}
+
+    .content{
+      padding:16px 18px 18px;
+      display:grid;
+      gap:14px;
+    }
+
+    .rowTop{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .rowTop .left{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+
+    .rank{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:linear-gradient(90deg, rgba(167,139,250,.16), rgba(96,165,250,.14), rgba(94,234,212,.14));
+      font-size:12px;
+    }
+
+    .progress{
+      height:10px;
+      border-radius:999px;
+      background:#f1f2fb;
+      border:1px solid var(--line);
+      overflow:hidden;
+    }
+    .progress > div{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, var(--violet), var(--sky), var(--mint));
+      transition:width .25s ease;
+    }
+
+    .qbox{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#ffffff;
+      box-shadow:var(--shadow2);
+      padding:14px;
+      display:grid;
+      gap:10px;
+    }
+
+    .qhead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .qtext{
+      font-size:18px;
+      line-height:1.55;
+      letter-spacing:.15px;
+    }
+
+    .btnRow{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:4px;
+    }
+    button{
+      cursor:pointer;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 12px;
+      background:#ffffff;
+      color:var(--text);
+      font-weight:700;
+      letter-spacing:.2px;
+      box-shadow:0 6px 14px rgba(35,41,70,.08);
+      transition:transform .06s ease, box-shadow .2s ease, background .2s ease;
+      user-select:none;
+    }
+    button:active{transform:translateY(1px)}
+    button:disabled{opacity:.55; cursor:not-allowed; box-shadow:none}
+
+    .btnT{
+      background:linear-gradient(180deg, rgba(94,234,212,.25), rgba(94,234,212,.10));
+    }
+    .btnF{
+      background:linear-gradient(180deg, rgba(251,113,133,.22), rgba(251,113,133,.10));
+    }
+    .btnGhost{
+      background:#fafbff;
+      font-weight:650;
+    }
+    .btnPrimary{
+      background:linear-gradient(180deg, rgba(167,139,250,.28), rgba(96,165,250,.16));
+      border-color:#dedffc;
+    }
+
+    .status{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fafbff;
+      padding:10px 12px;
+      display:grid;
+      gap:8px;
+      color:var(--muted);
+      line-height:1.45;
+      min-height:64px;
+    }
+    .status.good{background:var(--softGood); border-color: rgba(16,185,129,.25)}
+    .status.bad{background:var(--softBad); border-color: rgba(239,68,68,.20)}
+    .status strong{color:var(--text)}
+    .explain{
+      border:1px dashed rgba(107,111,145,.25);
+      background:#ffffff;
+      border-radius:12px;
+      padding:8px 10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .footerRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:4px;
+    }
+
+    .switch{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#ffffff;
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+    }
+    .switch input{accent-color: var(--violet)}
+
+    /* Side panels */
+    .side{
+      padding:16px;
+      display:grid;
+      gap:12px;
+    }
+    .panel{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#ffffff;
+      box-shadow:var(--shadow2);
+      padding:12px;
+      display:grid;
+      gap:10px;
+    }
+    .panel h2{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .kpi{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .kpi .box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fafbff;
+      padding:10px;
+    }
+    .kpi .label{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .kpi .value{
+      font-family:var(--mono);
+      font-size:18px;
+      color:var(--text);
+    }
+
+    .review{
+      max-height:280px;
+      overflow:auto;
+      display:grid;
+      gap:10px;
+      padding-right:2px;
+    }
+    .item{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fafbff;
+      padding:10px;
+      display:grid;
+      gap:6px;
+      font-size:13px;
+      line-height:1.45;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-family:var(--mono);
+      font-size:11px;
+      color:var(--muted);
+    }
+    .tiny{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    /* Cute badge dot */
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background:linear-gradient(180deg, var(--yellow), var(--pink));
+      box-shadow:0 6px 16px rgba(251,191,36,.20);
+      display:inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Main -->
+    <section class="card">
+      <header>
+        <div class="title">
+          <h1>健康小勇士闖關賽｜是非題 30 題</h1>
+          <div class="sub">明亮簡約版｜隨機｜倒數｜連擊加分｜詳解可開關｜錯題可複習</div>
+        </div>
+        <div class="pill"><span class="dot"></span> MODE: <b id="modeText">準備中</b></div>
+      </header>
+
+      <div class="content">
+        <div class="rowTop">
+          <div class="left">
+            <div class="pill">Q <b id="qIndex">0</b>/<b id="qTotal">30</b></div>
+            <div class="pill">TIME <b id="timeText">--</b></div>
+            <div class="pill">STREAK <b id="streakText">0</b></div>
+            <div class="pill">+ <b id="pointsHint">0</b> pts</div>
+          </div>
+          <div class="rank">稱號：<strong id="rankText">新手冒險家</strong></div>
+        </div>
+
+        <div class="progress"><div id="barFill"></div></div>
+
+        <div class="qbox">
+          <div class="qhead">
+            <div>題目</div>
+            <div class="pill">提示：是=對，非=錯</div>
+          </div>
+
+          <div class="qtext" id="qText">按下「開始」後會出現題目。</div>
+
+          <div class="btnRow">
+            <button class="btnT" id="btnTrue" disabled>⭕ 是（對）</button>
+            <button class="btnF" id="btnFalse" disabled>❌ 非（錯）</button>
+          </div>
+
+          <div class="status" id="statusBox">
+            <div id="statusText">請先按「開始」。</div>
+            <div class="explain" id="explainBox" style="display:none;"></div>
+          </div>
+
+          <div class="footerRow">
+            <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
+              <label class="switch"><input type="checkbox" id="soundToggle" checked />音效</label>
+              <label class="switch"><input type="checkbox" id="timerToggle" checked />倒數計時</label>
+              <label class="switch"><input type="checkbox" id="shuffleToggle" checked />題目隨機</label>
+              <label class="switch"><input type="checkbox" id="explainToggle" checked />顯示詳解</label>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
+              <button class="btnGhost" id="btnReset">重來一局</button>
+              <button class="btnPrimary" id="btnStart">開始</button>
+            </div>
+          </div>
+
+          <div class="tiny">小提醒：越快答越多分；時間到會自動跳下一題並記錯題。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Side -->
+    <aside class="card">
+      <div class="side">
+        <div class="panel">
+          <h2>即時戰況</h2>
+          <div class="kpi">
+            <div class="box"><div class="label">分數 Score</div><div class="value" id="scoreText">0</div></div>
+            <div class="box"><div class="label">正確 Correct</div><div class="value" id="correctText">0</div></div>
+            <div class="box"><div class="label">錯誤 Wrong</div><div class="value" id="wrongText">0</div></div>
+            <div class="box"><div class="label">準確率 Acc%</div><div class="value" id="accText">0%</div></div>
+          </div>
+          <div class="tiny" id="hintBox">連擊越高，得分越漂亮。</div>
+        </div>
+
+        <div class="panel">
+          <h2>錯題清單（可複習）<span class="pill">WRONG <b id="wrongCount">0</b></span></h2>
+          <div class="review" id="reviewList"></div>
+          <div class="tiny">會顯示你選的答案、正確答案與詳解。</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+<script>
+/* 題庫 */
+const QUESTIONS = [
+  "食物和水傳染是「流行性結膜炎」最主要的傳染途徑。",
+  "勤洗手、不用手摸臉部，可以有效預防食物和水傳染。",
+  "維持環境衛生，定期清理積水容器和水溝，能阻斷病媒蚊傳染的途徑，預防霍亂流行。",
+  "結核病發病初期不易被察覺，平時可採用「五分篩檢法」自我檢測。",
+  "罹患開放性肺結核的患者，必須接受三個月以上的藥物治療。",
+  "衛生福利部 疾病管制署針對結核病患者推動「送藥計畫」，確保患者按時服藥。",
+  "結核病患者平時應戴口罩、保持室內空氣流通，並按時複查，以了解病況。",
+  "平時做到「6要5不」的預防行動，就能有效降低感染新型A型流感的機會。",
+  "「愛滋病」是先天免疫缺乏症候群的簡稱。",
+  "與愛滋病病毒感染者共用注射針頭、刮鬍刀等器具，病毒容易藉由血液傳染。",
+  "面對不確定的訊息，不管是網路資訊或電視廣告，都不應該完全相信，要保持懷疑的態度。",
+  "網路上有許多經過偽裝的訊息，可以透過請教師長、查核訊息來避免受騙上當。",
+  "電子煙的包裝很炫也沒有臭味，因此吸電子煙不會像吸菸一樣傷身。",
+  "任何人都不得販賣或供應酒給兒童及少年。",
+  "毒品只使用一次不會成癮。",
+  "使用毒品對個人、家庭與人際、社會層面都可能帶來不好的影響。",
+  "使用毒品容易與人產生衝突，使家庭失和。",
+  "毒品分為四級，只有使用第一級毒品才算犯罪。",
+  "朋友力邀你使用毒品時，為了避免破壞友誼，應該接受他的提議。",
+  "進行休閒活動時，要遠離出入人員複雜的場所，避免接觸到成癮物質。",
+  "學習「情緒調適」的技能，可以幫助我們正視自己的情緒，並遠離成癮物質。",
+  "每個人都是獨一無二的，只要能發揮潛能和專長，每個人都有完成夢想的可能。",
+  "從滑梯最高點往下跳，是證明自己勇氣的行為。",
+  "教室門口是與同學培養感情的好地方，因此在教室門口互相推擠沒關係。",
+  "下雨天無法到室外遊戲，因此可以在走廊上與同學奔跑追逐。",
+  "為了趕時間，可以在人行道上快速的向前騎自行車。",
+  "與大型車輛並排直行通過路口時，隨時注意自己能讓他人看見，不被其他車輛遮蔽。",
+  "除了前門、後門之外，遊覽車上的其他出口平時沒有使用，可以利用空間來堆放雜物。",
+  "搭乘遊覽車逃生時，可使用車窗擊破器對準4個擊破點用力敲擊後，將碎玻璃推出形成逃出口。",
+  "緊急求救電話是提供民眾緊急求助用的，若惡作劇亂打電話，會影響真正有需求的人。"
+];
+
+/* 答案鍵（○=true、╳=false） */
+const ANSWER_KEY = [
+  false, false, false, false, false,
+  false, true,  false, false, true,
+  true,  true,  false, true,  false,
+  true,  true,  false, false, true,
+  true,  true,  false, false, false,
+  false, true,  false, true,  true
+];
+
+/* 詳解（空字串 = 不顯示） */
+const EXPLAINS = [
+  "接觸傳染是「流行性結膜炎」最主要的傳染途徑。",
+  "勤洗手、不用手摸臉部，可以有效預防「接觸傳染」。",
+  "清理積水容器和水溝，可有效預防「登革熱」。",
+  "結核病可採用「七分篩檢法」自我檢測。",
+  "開放性肺結核須接受「六個月以上」藥物治療。",
+  "應為「都治計畫」。",
+  "",
+  "應為「5要6不」的預防行動。",
+  "愛滋病是「後天免疫缺乏症候群（AIDS）」的簡稱。",
+  "",
+  "",
+  "",
+  "電子煙多含尼古丁與致癌物質，會傷害健康。",
+  "",
+  "毒品會使人上癮，最好連一次都不要碰。",
+  "",
+  "",
+  "依《毒品危害防制條例》毒品分四級；不論使用、引誘或運送等都可能觸法。",
+  "使用毒品不僅犯法且危害嚴重，應拒絕提議。",
+  "",
+  "",
+  "",
+  "從滑梯最高點往下跳是輕忽危險的冒險行為，不是展現勇氣。",
+  "在教室門口互相推擠容易發生危險與事故傷害。",
+  "走廊奔跑追逐容易相撞而受傷。",
+  "不可以在人行道上騎自行車。",
+  "",
+  "遊覽車各出口平時都應保持暢通。",
+  "",
+  ""
+];
+
+/* 遊戲設定 */
+const TOTAL = QUESTIONS.length;
+const SECONDS_PER_Q = 12;
+const BASE_POINTS = 100;
+const STREAK_BONUS = 12;
+const FAST_BONUS = 6;
+
+/* DOM */
+const $ = (id)=>document.getElementById(id);
+const qTotal = $("qTotal"), qIndex = $("qIndex"), qText = $("qText"), barFill = $("barFill");
+const timeText = $("timeText"), streakText = $("streakText"), scoreText = $("scoreText");
+const correctText = $("correctText"), wrongText = $("wrongText"), accText = $("accText");
+const statusText = $("statusText"), statusBox = $("statusBox"), modeText = $("modeText");
+const pointsHint = $("pointsHint"), rankText = $("rankText"), wrongCount = $("wrongCount");
+const reviewList = $("reviewList"), explainBox = $("explainBox");
+
+const btnTrue = $("btnTrue"), btnFalse = $("btnFalse"), btnStart = $("btnStart"), btnReset = $("btnReset");
+const soundToggle = $("soundToggle"), timerToggle = $("timerToggle"), shuffleToggle = $("shuffleToggle");
+const explainToggle = $("explainToggle");
+
+/* 音效（更柔和） */
+let audioCtx = null;
+function beep(type="good"){
+  if(!soundToggle.checked) return;
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    const now = audioCtx.currentTime;
+    const freq = type==="good" ? 660 : 250;
+    o.frequency.setValueAtTime(freq, now);
+    o.type = "triangle";
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.exponentialRampToValueAtTime(0.12, now + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+    o.start(now); o.stop(now + 0.25);
+  }catch(e){}
+}
+
+/* 狀態 */
+let order = [], idx = -1, score = 0, correct = 0, wrong = 0, streak = 0;
+let tLeft = SECONDS_PER_Q, timer = null, playing = false;
+const wrongLog = []; // {n, text, your, ans, explain}
+
+/* 工具 */
+function calcAcc(){
+  const done = correct + wrong;
+  if(done===0) return "0%";
+  return Math.round((correct/done)*100) + "%";
+}
+function rankLabel(){
+  const done = correct + wrong;
+  const acc = done ? correct/done : 0;
+  if(done===TOTAL && acc>=0.95) return "健康守護王";
+  if(acc>=0.85 && score>=1800) return "知識小達人";
+  if(acc>=0.75) return "穩穩前進";
+  if(acc>=0.60) return "越來越好";
+  return "新手冒險家";
+}
+function previewPoints(){
+  if(!playing) return 0;
+  const streakBonus = streak * STREAK_BONUS;
+  const timeBonus = timerToggle.checked ? (tLeft * FAST_BONUS) : 0;
+  return BASE_POINTS + streakBonus + timeBonus;
+}
+function updateUI(){
+  qTotal.textContent = TOTAL;
+  qIndex.textContent = idx>=0 ? (idx+1) : 0;
+  streakText.textContent = streak;
+  scoreText.textContent = score;
+  correctText.textContent = correct;
+  wrongText.textContent = wrong;
+  accText.textContent = calcAcc();
+  rankText.textContent = rankLabel();
+
+  const pct = idx>=0 ? ((idx)/TOTAL)*100 : 0;
+  barFill.style.width = pct + "%";
+
+  timeText.textContent = timerToggle.checked ? `${tLeft}s` : "OFF";
+  wrongCount.textContent = wrongLog.length;
+  pointsHint.textContent = previewPoints();
+}
+function setStatus(kind, msg){
+  statusBox.classList.remove("good","bad");
+  if(kind==="good") statusBox.classList.add("good");
+  if(kind==="bad") statusBox.classList.add("bad");
+  statusText.innerHTML = msg;
+}
+function buildOrder(){
+  order = Array.from({length: TOTAL}, (_,i)=>i);
+  if(shuffleToggle.checked){
+    for(let i=order.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+  }
+}
+function stopTimer(){ if(timer){ clearInterval(timer); timer=null; } }
+function startTimer(){
+  stopTimer();
+  if(!timerToggle.checked){ tLeft = SECONDS_PER_Q; updateUI(); return; }
+  tLeft = SECONDS_PER_Q;
+  timer = setInterval(()=>{
+    tLeft--;
+    if(tLeft<=0){
+      tLeft = 0; updateUI();
+      handleTimeout(); return;
+    }
+    updateUI();
+  }, 1000);
+}
+function showExplain(qId){
+  const ex = EXPLAINS[qId] || "";
+  if(!explainToggle.checked || !ex){
+    explainBox.style.display = "none";
+    explainBox.textContent = "";
+    return;
+  }
+  explainBox.style.display = "block";
+  explainBox.textContent = "詳解： " + ex;
+}
+
+function renderWrongList(){
+  reviewList.innerHTML = "";
+  if(wrongLog.length===0){
+    const div = document.createElement("div");
+    div.className = "tiny";
+    div.textContent = "目前沒有錯題。加油，保持連擊。";
+    reviewList.appendChild(div);
+    wrongCount.textContent = "0";
+    return;
+  }
+  wrongLog.slice(-60).forEach((x, i)=>{
+    const el = document.createElement("div");
+    el.className = "item";
+    const ex = x.explain ? `<div class="tiny">詳解：${x.explain}</div>` : "";
+    el.innerHTML = `
+      <div class="tag">#<b>${i+1}</b>｜題號 <b>${x.n}</b></div>
+      <div>${x.text}</div>
+      <div class="tag">你的答案：<b>${x.your}</b>　正確答案：<b>${x.ans}</b></div>
+      ${ex}
+    `;
+    reviewList.appendChild(el);
+  });
+  wrongCount.textContent = String(wrongLog.length);
+}
+function pushWrongLog(qId, your, ans){
+  wrongLog.push({
+    n: qId+1,
+    text: QUESTIONS[qId],
+    your,
+    ans,
+    explain: EXPLAINS[qId] || ""
+  });
+  renderWrongList();
+}
+
+function renderQuestion(){
+  const qId = order[idx];
+  qText.textContent = QUESTIONS[qId];
+
+  setStatus("warn", "選「是」或「非」作答。連續答對會加分；越快答越多分。");
+  explainBox.style.display = "none";
+
+  btnTrue.disabled = false;
+  btnFalse.disabled = false;
+
+  updateUI();
+  startTimer();
+}
+
+function scoreForCorrect(){ return previewPoints(); }
+
+function handleAnswer(userBool){
+  if(!playing) return;
+
+  const qId = order[idx];
+  const ans = ANSWER_KEY[qId];
+  const right = ans ? "是" : "非";
+
+  stopTimer();
+  btnTrue.disabled = true;
+  btnFalse.disabled = true;
+
+  if(userBool === ans){
+    const add = scoreForCorrect();
+    score += add; correct++; streak++;
+    setStatus("good", `<strong>答對！</strong> + <strong>${add}</strong> 分（連擊 ${streak}）`);
+    beep("good");
+  }else{
+    wrong++; streak = 0;
+    const your = userBool ? "是" : "非";
+    pushWrongLog(qId, your, right);
+    setStatus("bad", `<strong>答錯。</strong> 正確答案是：<strong>${right}</strong>。（已加入錯題清單）`);
+    beep("bad");
+  }
+
+  showExplain(qId);
+  updateUI();
+  setTimeout(nextStep, 900);
+}
+
+function handleTimeout(){
+  if(!playing) return;
+
+  const qId = order[idx];
+  stopTimer();
+  wrong++; streak = 0;
+
+  const ans = ANSWER_KEY[qId];
+  const right = ans ? "是" : "非";
+  pushWrongLog(qId, "（逾時）", right);
+
+  setStatus("bad", `<strong>時間到。</strong> 本題已記為錯題。正確答案：<strong>${right}</strong>。`);
+  beep("bad");
+
+  showExplain(qId);
+  updateUI();
+  setTimeout(nextStep, 1000);
+}
+
+function endGame(){
+  playing = false;
+  stopTimer();
+  btnTrue.disabled = true;
+  btnFalse.disabled = true;
+  modeText.textContent = "結算";
+
+  barFill.style.width = "100%";
+
+  const done = correct + wrong;
+  const acc = done ? Math.round((correct/done)*100) : 0;
+
+  setStatus("warn",
+    `<strong>闖關結束！</strong> 分數 <strong>${score}</strong>｜正確 <strong>${correct}</strong>｜錯誤 <strong>${wrong}</strong>｜準確率 <strong>${acc}%</strong>｜稱號：<strong>${rankLabel()}</strong>`
+  );
+  explainBox.style.display = "none";
+}
+
+function nextStep(){
+  idx++;
+  if(idx >= TOTAL){ endGame(); return; }
+  renderQuestion();
+}
+
+function resetAll(){
+  stopTimer();
+  idx = -1; score = 0; correct = 0; wrong = 0; streak = 0;
+  tLeft = SECONDS_PER_Q; playing = false; wrongLog.length = 0;
+
+  qText.textContent = "按下「開始」後會出現題目。";
+  btnTrue.disabled = true;
+  btnFalse.disabled = true;
+  barFill.style.width = "0%";
+  modeText.textContent = "準備中";
+  setStatus("warn","請先按「開始」。");
+  explainBox.style.display = "none";
+  renderWrongList();
+  updateUI();
+}
+
+function startGame(){
+  buildOrder();
+  idx = 0; score = 0; correct = 0; wrong = 0; streak = 0; wrongLog.length = 0;
+  playing = true;
+  modeText.textContent = "進行中";
+  renderWrongList();
+  renderQuestion();
+}
+
+/* 事件 */
+btnStart.addEventListener("click", ()=>{ if(!playing) startGame(); });
+btnReset.addEventListener("click", ()=>resetAll());
+btnTrue.addEventListener("click", ()=>handleAnswer(true));
+btnFalse.addEventListener("click", ()=>handleAnswer(false));
+
+timerToggle.addEventListener("change", ()=>{
+  if(!playing){ updateUI(); return; }
+  startTimer(); updateUI();
+});
+shuffleToggle.addEventListener("change", ()=>{
+  setStatus("warn", "題目隨機設定已更新（下一局生效）。");
+});
+soundToggle.addEventListener("change", ()=>{
+  setStatus("warn", soundToggle.checked ? "音效已開啟。" : "音效已關閉。");
+});
+
+/* 初始化 */
+resetAll();
+</script>
+</body>
+</html>
